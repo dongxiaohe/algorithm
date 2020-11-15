@@ -12,24 +12,26 @@ example_graph2 = {
     'Y': {'X': 1, 'W': 1, 'Z': 1},
     'Z': {'W': 5, 'Y': 1},
 }
+example_graph3= {
+    'A': {'B': 6, 'C': 5},
+    'B': {'C': -100},
+    'C': {},
+}
 
 import heapq
 def calcuate_distances(graph, start_vertex):
-    distances = {vertex: float('infinity') for vertex in graph}
-    distances[start_vertex] = 0
-
+    distances = {}
     pq = [(0, start_vertex)]
     while pq:
         current_distance, current_vertex = heapq.heappop(pq); 
-        if current_distance > distances[current_vertex]:
-            continue
-        for nearby_vertex, vertex_distance in graph[current_vertex].items():
-            distance = current_distance + vertex_distance
-            if distance < distances[nearby_vertex]:
-                distances[nearby_vertex] = distance
+        if current_vertex not in distances:
+            distances[current_vertex] = current_distance
+            for nearby_vertex, vertex_distance in graph[current_vertex].items():
+                distance = current_distance + vertex_distance
                 heapq.heappush(pq, (distance, nearby_vertex))
     return distances
 
 print(calcuate_distances(example_graph1, 'A'))
 print(calcuate_distances(example_graph2, 'X'))
+print(calcuate_distances(example_graph3, 'A'))
 
