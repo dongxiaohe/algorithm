@@ -1,21 +1,16 @@
 class Solution:
     def minimumEffortPath(self, heights: List[List[int]]) -> int:
+        m, n = len(heights), len(heights[0])
+        pq = [(0, 0, 0)] # distance, row, col
         distances = collections.defaultdict(int)
-        if len(heights) == 0: return -1
-        pq = [(0, (0, 0))]
+        DIR = [0, 1, 0, -1, 0]
         while pq:
-            current_distance, current_position = heapq.heappop(pq);
-            if current_position not in distances:
-                distances[current_position] = current_distance
-                x, y = current_position
-                if x - 1 >= 0:
-                    heapq.heappush(pq, (max(current_distance, abs(heights[x - 1][y] - heights[x][y])), (x - 1, y)))
-                if x + 1 < len(heights):
-                    heapq.heappush(pq, (max(current_distance, abs(heights[x + 1][y] - heights[x][y])), (x + 1, y)))
-                if y - 1 >= 0:
-                    heapq.heappush(pq, (max(current_distance, abs(heights[x][y - 1] - heights[x][y])), (x, y - 1)))
-                if y + 1 < len(heights[0]):
-                    heapq.heappush(pq, (max(current_distance, abs(heights[x][y + 1] - heights[x][y])), (x, y + 1)))
-        return distances[(len(heights) - 1, len(heights[0]) - 1)]
-        
-
+            distance, x, y = heapq.heappop(pq)
+            if (x, y) not in distances:
+                distances[(x, y)] = distance
+                for i in range(4):
+                    next_x = x + DIR[i]
+                    next_y = y + DIR[i + 1]
+                    if 0 <= next_x < m and 0 <= next_y < n:
+                        heapq.heappush(pq, (max(distance, abs(heights[next_x][next_y] - heights[x][y])), next_x, next_y))
+        return distances[(m - 1, n - 1)]
