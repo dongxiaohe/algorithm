@@ -1,12 +1,12 @@
 class Solution:
     def isArithmetic(self, arr):
-        sortedArr = sorted(arr)
-        m = len(arr)
-        if m <= 1: return False
-        diff = sortedArr[1] - sortedArr[0]
-        for i in range(len(arr) - 1):
-            if sortedArr[i + 1] - sortedArr[i] != diff:
-                return False
+        st = set(arr)
+        if len(st) != len(arr): return len(st) == 1
+        mn, mx = min(arr), max(arr)
+        if (mx - mn) % (len(arr) - 1) != 0: return False # make sure float value cast to integer
+        diff = (mx - mn) // (len(arr) - 1) 
+        for step in range(mn, mx, diff):
+            if step not in st: return False
         return True
     def checkArithmeticSubarrays(self, nums: List[int], l: List[int], r: List[int]) -> List[bool]:
         result = []
