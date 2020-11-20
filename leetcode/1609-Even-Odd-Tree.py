@@ -1,17 +1,19 @@
 class Solution(object):
     def isEvenOddTree(self, root):
-        def _preTraversal(root, kv, level):
-            if not root:
-                return
-            kv[level].append(root.val)
-            _preTraversal(root.left, kv, level + 1)
-            _preTraversal(root.right, kv, level + 1)
-        kv = collections.defaultdict(list)
-        _preTraversal(root, kv, 0)
-        for level, arr in kv.items():
-            if level % 2 == 0 and arr != sorted(arr):
-                return False
-            elif level % 2 == 1 and arr != sorted(arr):
-                return False
+        queue = collections.deque()
+        queue.append(root)
+        even = True
+        while queue:
+            size = len(queue)
+            if even: preVal = float("-inf")
+            else: preVal = float("inf")
+            while size > 0: # use queue and size to travere by the levels
+                node = queue.popleft()
+                if even and (node.val % 2 == 0 or preVal >= node.val):return False
+                if not even and (node.val % 2 == 1 or preVal <= node.val): return False
+                preVal = node.val
+                if node.left: queue.append(node.left)
+                if node.right: queue.append(node.right)
+                size -= 1
+            even = not even
         return True
-
