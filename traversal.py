@@ -14,3 +14,10 @@ def preOrder(node):
         result.extend(preOrder(node.right))
     return result
 
+def postOrder(node):
+    result = []
+    if node:
+        result.extend(postOrder(node.left))
+        result.extend(postOrder(node.right))
+        result.append(node.val)
+    return result
