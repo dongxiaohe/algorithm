@@ -1,3 +1,5 @@
+from fixture import *
+
 def inOrder(node):
     result = []
     if node:
@@ -21,3 +23,5 @@ def postOrder(node):
         result.extend(postOrder(node.right))
         result.append(node.val)
     return result
+
+print(inOrder(root))
