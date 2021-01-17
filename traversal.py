@@ -8,6 +8,17 @@ def inOrder(node):
         result.extend(inOrder(node.right))
     return result
 
+def inOrderIter(node):
+    stack, result = [], []
+    while stack or node:
+        while node:
+            stack.append(node)
+            node = node.left
+        cur = stack.pop()
+        result.append(cur.val)
+        node = cur.right
+    return result
+
 def preOrder(node):
     result = []
     if node:
@@ -24,4 +35,4 @@ def postOrder(node):
         result.append(node.val)
     return result
 
-print(inOrder(root))
+assert inOrder(root) == inOrderIter(root)
