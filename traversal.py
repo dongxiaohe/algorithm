@@ -27,6 +27,16 @@ def preOrder(node):
         result.extend(preOrder(node.right))
     return result
 
+def preOrderIter(node):
+    if not node: return []
+    stack, result = [node], []
+    while stack:
+        cur = stack.pop()
+        result.append(cur.val)
+        if cur.right: stack.append(cur.right)
+        if cur.left: stack.append(cur.left)
+    return result
+
 def postOrder(node):
     result = []
     if node:
@@ -36,3 +46,4 @@ def postOrder(node):
     return result
 
 assert inOrder(root) == inOrderIter(root)
+assert preOrder(root) == preOrderIter(root)
