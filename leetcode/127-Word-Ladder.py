@@ -1,15 +1,23 @@
 class Solution:
     def ladderLength(self, beginWord: str, endWord: str, wordList: List[str]) -> int:
         wordSet = set(wordList)
-        queue = collections.deque([[beginWord, 1]])
-        while queue:
-            word, length = queue.popleft()
-            if word == endWord:
-                return length
-            for i in range(len(word)):
-                for ch in string.ascii_lowercase:
-                    nextWord = word[:i] + ch + word[i + 1:]
-                    if nextWord in wordSet:
-                        wordSet.remove(nextWord)
-                        queue.append([nextWord, length + 1])
+        if endWord not in wordSet:
+            return 0
+        startQueue, endQueue, length = collections.deque([beginWord]), collections.deque([endWord]), 1
+        while startQueue and endQueue:
+            if len(startQueue) > len(endQueue):
+                startQueue, endQueue = endQueue, startQueue
+            i, size = 0, len(startQueue)
+            while i < size:
+                word = startQueue.popleft()
+                for j in range(len(word)):
+                    for ch in string.ascii_lowercase:
+                        nextWord = word[:j] + ch + word[j + 1:]
+                        if nextWord in endQueue:
+                            return length + 1
+                        if nextWord in wordSet:
+                            wordSet.remove(nextWord)
+                            startQueue.append(nextWord)
+                i += 1
+            length += 1
         return 0
