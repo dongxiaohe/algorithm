@@ -1,19 +1,13 @@
 class Solution:
     def swapNodes(self, head: ListNode, k: int) -> ListNode:
-        n = 0
-        tmp = head
-        while tmp:
-            n += 1
-            tmp = tmp.next
-        swap1, swap2 = None, None
-        tmp = head
-        count = 1 
-        while tmp:
-            if count == k:
-                swap1 = tmp
-            if count == n - k + 1:
-                swap2 = tmp
-            tmp = tmp.next
-            count += 1
-        swap1.val, swap2.val = swap2.val, swap1.val
+        n1, n2, p = None, None, head
+        while p:
+            k -= 1
+            if n2: n2 = n2.next
+            if k == 0:
+                n1 = p
+                n2 = head
+            p = p.next
+        n1.val, n2.val = n2.val, n1.val
         return head
+
