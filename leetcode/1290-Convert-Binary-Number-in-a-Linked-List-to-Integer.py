@@ -1,11 +1,7 @@
 class Solution:
     def getDecimalValue(self, head: ListNode) -> int:
-        stack = []
+        res = 0
         while head:
-            stack.append(head.val)
+            res = 2 * res + head.val
             head = head.next
-        power, res = 0, 0
-        while stack:
-            res += 2 ** power if stack.pop() else 0
-            power += 1
         return res
