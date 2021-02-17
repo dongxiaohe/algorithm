@@ -1,23 +1,11 @@
 class Solution:
+    _min = float("inf")
+    prev = None
     def getMinimumDifference(self, root: TreeNode) -> int:
-        res = {
-            "prev": None,
-            "cur": None,
-            "_min": float("inf")
-        }
-        def _inorder(node, res):
-            if node:
-                _inorder(node.left, res)
-                if res["prev"] is None:
-                    res["prev"] = node.val
-                elif res["cur"] is None:
-                    res["cur"] = node.val
-                    res["_min"] = min(res["_min"], abs(res["cur"] - res["prev"]))
-                else: 
-                    res["prev"] = res["cur"]
-                    res["cur"] = node.val
-                    res["_min"] = min(res["_min"], abs(res["cur"] - res["prev"]))
-                _inorder(node.right, res)
-        _inorder(root, res)
-        return res["_min"]
-    
+        if not root: return self._min
+        self.getMinimumDifference(root.left)
+        if self.prev is not None:
+            self._min = min(self._min, abs(root.val - self.prev))
+        self.prev = root.val
+        self.getMinimumDifference(root.right)
+        return self._min
