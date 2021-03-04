@@ -1,27 +1,19 @@
 class Solution:
     def getAllElements(self, root1: TreeNode, root2: TreeNode) -> List[int]:
-        def _inorder(node):
-            result = []
-            if node:
-                result.extend(_inorder(node.left))
-                result.append(node.val)
-                result.extend(_inorder(node.right))
-            return result
-        res1, res2, res = _inorder(root1), _inorder(root2), []
-        i = j = 0
-        while i < len(res1) or j < len(res2):
-            if i < len(res1) and j < len(res2):
-                if res1[i] < res2[j]:
-                    res.append(res1[i])
-                    i += 1
-                else:
-                    res.append(res2[j])
-                    j += 1
-            elif i < len(res1):
-                res.append(res1[i])
-                i += 1
+        def _pushLeft(stack, node):
+            while node:
+                stack.append(node)
+                node = node.left
+        s1, s2, res = [], [], []
+        _pushLeft(s1, root1)
+        _pushLeft(s2, root2)
+        while s1 or s2:
+            s = None
+            if s1 and s2:
+                s = s1 if s1[-1].val < s2[-1].val else s2
             else:
-                res.append(res2[j])
-                j += 1
+                s = s1 if s1 else s2
+            node = s.pop()
+            res.append(node.val)
+            _pushLeft(s, node.right)
         return res
-                
