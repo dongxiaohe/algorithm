@@ -1,3 +1,23 @@
+def traverseLeft(stack, node):
+    while node:
+        stack.append(node)
+        node = node.left
+def treeToList1(root):
+    stack = []
+    first, cur, prev = None, None, None
+    traverseLeft(stack, root)
+    while stack:
+        cur = stack.pop()
+        if prev is not None:
+            if first is None: first = prev
+            cur.left = prev
+            prev.right = cur
+        prev = cur
+        traverseLeft(stack, cur.right)
+    first.left = cur
+    cur.right = first
+    return first
+
 def treeToList(root):
     if root is None: return root
     prev, cur, first = None, None, None
@@ -20,12 +40,11 @@ def treeToList(root):
 
 
 from fixture import *
-root = treeToList(three)
+root = treeToList1(three)
+
 i, limit = 0, 5 
 while i < limit:
     print("..................... " + root.val)
     root = root.right
     i += 1
-
-
 
