@@ -9,7 +9,13 @@ class Solution:
                 else:
                     l = m + 1
             return l
-        soildersArr = []
+        heap = []
         for i in range(len(mat)):
-            soildersArr.append([getSoilders(mat[i]), i])
-        return list(map(lambda x: x[1], sorted(soildersArr)))[:k]
+            heapq.heappush(heap, [-getSoilders(mat[i]), -i])
+            if len(heap) > k:
+                heapq.heappop(heap)
+        res, k = [0] * k, k - 1
+        while k >= 0:
+            res[k] = -heappop(heap)[1]
+            k -= 1
+        return res
