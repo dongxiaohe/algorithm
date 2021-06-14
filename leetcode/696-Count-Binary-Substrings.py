@@ -1,7 +1,7 @@
 class Solution:
     def countBinarySubstrings(self, s: str) -> int:
         if not s: return 0
-        pre, cur, tmp, res = 1, 0, s[0], 0
+        pre, cur, res = 0, 1, 0
         for i in range(1, len(s)):
             if s[i - 1] != s[i]:
                 if cur > 0:
