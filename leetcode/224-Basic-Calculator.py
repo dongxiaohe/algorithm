@@ -33,9 +33,7 @@ class Solution:
                     if ch == "(":
                         break
                     tmp.append(ch)
-                tmp = "".join(tmp[::-1]) + cur
-                tmp = eval(tmp)
-                cur = str(tmp)
+                cur = str(eval("".join(tmp[::-1]) + cur))
             elif s[i] == "(":
                 stack.append(cur)
                 stack.append("(")
