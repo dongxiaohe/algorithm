@@ -1,14 +1,10 @@
 class Solution:
     def fullJustify(self, words: List[str], maxWidth: int) -> List[str]:
-        def justifyLine(arr, maxWidth, lastLine):
+        def justifyLine(arr, maxWidth):
             if len(arr) == 1: return arr[0] + " " * (maxWidth - len(arr[0]))
-            if lastLine: 
-                firstSection = " ".join(arr)
-                return firstSection + " " * (maxWidth - len(firstSection))
             spaces = len(arr) - 1
             leftSpaces = maxWidth - len("".join(arr))
-            if leftSpaces % spaces == 0:
-                return (" " * (leftSpaces // spaces)).join(arr)
+            if leftSpaces % spaces == 0: return (" " * (leftSpaces // spaces)).join(arr)
             additionSpacesCnt = (leftSpaces % spaces)
             for i in range(len(arr)):
                 if additionSpacesCnt == 0:
@@ -22,9 +18,10 @@ class Solution:
                 curLine.append(words[i])
                 curCount += len(words[i]) + 1
             else:
-                res.append(justifyLine(curLine, maxWidth, False))
+                res.append(justifyLine(curLine, maxWidth))
                 curLine = [words[i]]
                 curCount = len(words[i]) + 1
         if curLine:
-            res.append(justifyLine(curLine, maxWidth, True))
+            firstSection = " ".join(curLine)
+            res.append(firstSection + " " * (maxWidth - len(firstSection)))
         return res
