@@ -1,13 +1,11 @@
 class Solution:
     def findMaxValueOfEquation(self, points: List[List[int]], k: int) -> int:
-        def equation(x1, y1, x2, y2, k):
-            if x2 - x1 <= k:
-                return y1 + y2 + x2 - x1
-            return float("-inf")
-        _max = float("-inf")
-        for i in range(len(points)):
-            for j in range(i + 1, len(points)):
-                x1, y1 = points[i]
-                x2, y2 = points[j]
-                _max = max(_max, equation(x1, y1, x2, y2, k))
-        return _max
+        # evaluate y1 + y2 + |x1 - x2|
+        # since x2 > x1 so we can only evaulate y1 - x1 when iterate x2, y2
+        pq, res = [], float("-inf")
+        for x, y in points:
+            while pq and x - pq[0][1] > k:
+                heapq.heappop(pq)
+            if pq: res = max(res, -pq[0][0] + x + y)
+            heapq.heappush(pq, [x - y, x])
+        return res
