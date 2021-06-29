@@ -1,23 +1,15 @@
 class Solution:
     def wordsTyping(self, sentence: List[str], rows: int, cols: int) -> int:
-        cnt, curLine, curCnt, lines = 0, "", 0, 1
-        i = 0
-        while True:
-            index = i % len(sentence)
-            if len(sentence[index]) + curCnt > cols:
-                lines += 1
-                curCnt = 0
-            if lines > rows:
-                i -= 1
-                break
-            if len(sentence[index]) + curCnt <= cols:
-                curCnt += len(sentence[index]) + 1
-            else: continue
-            if curCnt > 0 and lines < rows and index == len(sentence) - 1 and curCnt + len(sentence[0]) > cols:
-                i = (rows // lines) * (i + 1)
-                lines *= (rows // lines)
-                lines += 1
-                curCnt = 0
-                i -= 1
-            i += 1
-        return (i + 1) // len(sentence)
+        largestWord = max(sentence, key = lambda x: len(x))
+        if len(largestWord) > cols: return 0
+        allWords, start = " ".join(sentence) + " ", 0
+        for i in range(rows):
+            start += cols - 1
+            if allWords[start % len(allWords)] == " ":
+                start += 1
+            elif allWords[(start + 1) % len(allWords)] == " ":
+                start += 2
+            else:
+                while start > 0 and allWords[(start - 1) % len(allWords)] != " ":
+                    start -= 1
+        return start // len(allWords)
