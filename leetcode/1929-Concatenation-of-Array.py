@@ -1,7 +1,7 @@
 class Solution(object):
     def getConcatenation(self, nums):
-        res = []
         n = len(nums)
-        for i in range(n * 2):
-            res.append(nums[i % n])
+        res = [0] * 2 * n
+        for i in range(n):
+            res[i + n] = res[i] = nums[i]
         return res
