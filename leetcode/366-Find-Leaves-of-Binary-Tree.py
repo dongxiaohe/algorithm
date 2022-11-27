@@ -1,8 +1,7 @@
 class Solution(object):
     def findLeaves(self, root):
         def _isLeaf(node):
-            if node is None: return False
-            return node.left is None and node.right is None
+            return node is not None and node.left is None and node.right is None
         def _dfs(node, res):
             if node is None: return None
             if _isLeaf(node.left):
@@ -13,18 +12,10 @@ class Solution(object):
                 node.right = None
             _dfs(node.left, res)
             _dfs(node.right, res)
-
         res, arr = [], []
-        if _isLeaf(root):
-            arr.append(root.val)
-            res.append(arr)
-            return res
-        while root is not None:
+        while not _isLeaf(root):
             _dfs(root, arr)
             res.append(arr)
             arr = []
-            if _isLeaf(root):
-                arr.append(root.val)
-                res.append(arr)
-                return res
+        if root is not None: res.append([root.val])
         return res
